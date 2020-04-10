@@ -7,12 +7,14 @@ interface Props {
   countries: Array<string>;
   filteredCountries: Array<string>;
   countryFilter: (country: string) => void;
+  brandTypeFilter: (selectedFilter: string) => void;
 }
 
 export default function Filters({
   countries,
   filteredCountries,
   countryFilter,
+  brandTypeFilter,
 }: Props): ReactElement {
   return (
     <div>
@@ -59,10 +61,38 @@ export default function Filters({
       >
         <Dropdown.Item
           onClick={() => {
-            countryFilter("All");
+            brandTypeFilter("all");
           }}
         >
           All
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
+            brandTypeFilter("organic");
+          }}
+        >
+          Organic Brands
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
+            brandTypeFilter("verified");
+          }}
+        >
+          Verified Brands
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
+            brandTypeFilter("mass");
+          }}
+        >
+          Mass-Owned Brands
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
+            countryFilter("operational");
+          }}
+        >
+          Operational Brands
         </Dropdown.Item>
       </DropdownButton>
     </div>

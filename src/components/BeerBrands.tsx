@@ -5,6 +5,7 @@ import brewery from "../interfaces/brewery";
 import Search from "./Search";
 import Filters from "./Filters";
 import DefaultDisplay from "./DefaultDisplay";
+import { SSL_OP_NETSCAPE_CHALLENGE_BUG } from "constants";
 
 interface Props {}
 
@@ -16,7 +17,8 @@ interface State {
   filteredCountries: Array<string>;
   singleCountryBreweries: brewery[];
   selectedCountry: Array<string>;
-  singleTypeBreweries: brewery[];
+  singleTypeBreweries: brewery[] | Array<string>;
+  singleTypeCountries: Array<string>;
 }
 
 export default class BeerBrands extends Component<Props, State> {
@@ -29,6 +31,7 @@ export default class BeerBrands extends Component<Props, State> {
     singleCountryBreweries: [],
     selectedCountry: [],
     singleTypeBreweries: [],
+    singleTypeCountries: [],
   };
 
   async componentDidMount() {
@@ -122,44 +125,71 @@ export default class BeerBrands extends Component<Props, State> {
 
   brandTypeFilter = (selectedFilter: string) => {
     const breweries: brewery[] = [...this.state.breweries];
-    const filteredBreweries: brewery[] = [...this.state.breweries];
-
-    if (filteredBreweries.length > 0) {
-      switch (selectedFilter) {
-        case "organic":
-          // code block
-          break;
-        case "verified":
-          // code block
-          break;
-        case "mass":
-          // code block
-          break;
-        case "operational":
-          // code block
-          break;
-        default:
-        // code block
+    const countries: Array<string> = [...this.state.countries];
+    switch (selectedFilter) {
+      case "organic":
+        const singleTypeBreweries: brewery[] = _.filter(
+          breweries,
+          (brewery) => brewery.isOrganic === "Y"
+        );
+        console.log(singleTypeBreweries);
+        if (singleTypeBreweries.length === 0) {
+          this.setState({ singleTypeBreweries: ["no organic brands"] });
+        } else {
+          this.setState({
+            singleTypeBreweries: singleTypeBreweries,
+            singleTypeCountries: countries,
+          });
+        }
+        break;
+      case "verified": {
+        const singleTypeBreweries: brewery[] = _.filter(
+          breweries,
+          (brewery) => brewery.status === "verified"
+        );
+        this.setState({
+          singleTypeBreweries: singleTypeBreweries,
+          singleTypeCountries: countries,
+        });
+        break;
       }
-    } else if (breweries.length > 0) {
-      switch (selectedFilter) {
-        case "organic":
-          // code block
-          break;
-        case "verified":
-          // code block
-          break;
-        case "mass":
-          // code block
-          break;
-        case "operational":
-          // code block
-          break;
-        default:
-        // code block
+      case "mass": {
+        const singleTypeBreweries: brewery[] = _.filter(
+          breweries,
+          (brewery) => brewery.isMassOwned === "Y"
+        );
+        const countryPerBrewery: Array<string> | void[] = _.map(
+          singleTypeBreweries,
+          (brewery) => {
+            if (brewery.locations) {
+              return brewery.locations[0].country.displayName;
+            }
+            const unspecified: string = "United States";
+            return unspecified;
+          }
+        );
+        const countries: Array<string> = _.uniq(countryPerBrewery);
+        this.setState({
+          singleTypeBreweries: singleTypeBreweries,
+          singleTypeCountries: countries,
+        });
+        break;
       }
-    } else {
-      this.setState({ singleTypeBreweries: [] });
+      case "operational": {
+        const singleTypeBreweries: brewery[] = _.filter(
+          breweries,
+          (brewery) =>
+            typeof brewery.isInBusiness !== undefined &&
+            brewery.isInBusiness === "Y"
+        );
+        this.setState({
+          singleTypeBreweries: singleTypeBreweries,
+          singleTypeCountries: countries,
+        });
+        break;
+      }
+      default:
+        this.setState({ singleTypeBreweries: [] });
     }
   };
 
@@ -172,7 +202,10 @@ export default class BeerBrands extends Component<Props, State> {
       ...this.state.singleCountryBreweries,
     ];
     const selectedCountry: Array<string> = [...this.state.selectedCountry];
-
+    const singleTypeBreweries: brewery[] = [...this.state.singleTypeBreweries];
+    const singleTypeCountries: Array<string> = [
+      ...this.state.singleTypeCountries,
+    ];
     return (
       <div>
         <h1>🍺Beer Brands 101🍺</h1>
@@ -181,13 +214,20 @@ export default class BeerBrands extends Component<Props, State> {
           countries={countries}
           filteredCountries={filteredCountries}
           countryFilter={this.countryFilter}
+          brandTypeFilter={this.brandTypeFilter}
         />
-        {this.state.searchQuery && filteredBreweries.length === 0 ? (
+        {(this.state.searchQuery && filteredBreweries.length === 0) ||
+        singleTypeBreweries.length === 1 ? (
           <h1>No matching results</h1>
         ) : singleCountryBreweries.length > 0 && selectedCountry.length > 0 ? (
           <DefaultDisplay
             breweries={singleCountryBreweries}
             countries={selectedCountry}
+          />
+        ) : singleTypeBreweries.length > 1 ? (
+          <DefaultDisplay
+            breweries={singleTypeBreweries}
+            countries={singleTypeCountries}
           />
         ) : this.state.searchQuery ? (
           <DefaultDisplay
