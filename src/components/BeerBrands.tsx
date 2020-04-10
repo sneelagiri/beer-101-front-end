@@ -7,12 +7,16 @@ import Filters from "./Filters";
 import DefaultDisplay from "./DefaultDisplay";
 
 interface Props {}
+
 interface State {
   breweries: brewery[];
   countries: Array<string>;
   searchQuery: string;
   filteredBreweries: brewery[];
   filteredCountries: Array<string>;
+  singleCountryBreweries: brewery[];
+  selectedCountry: Array<string>;
+  singleTypeBreweries: brewery[];
 }
 
 export default class BeerBrands extends Component<Props, State> {
@@ -22,7 +26,11 @@ export default class BeerBrands extends Component<Props, State> {
     searchQuery: "",
     filteredBreweries: [],
     filteredCountries: [],
+    singleCountryBreweries: [],
+    selectedCountry: [],
+    singleTypeBreweries: [],
   };
+
   async componentDidMount() {
     const fetchBreweries = await superagent.get(
       `http://localhost:4000/breweries`
@@ -41,7 +49,11 @@ export default class BeerBrands extends Component<Props, State> {
     );
     // Used Lodash uniq to quickly and easily get rid of duplicates
     const countries: Array<string> = _.uniq(countryPerBrewery);
-    this.setState({ breweries: breweries, countries: countries });
+    this.setState({
+      breweries: breweries,
+      countries: countries,
+    });
+    console.log(breweries);
   }
 
   searchQuery = (keyword: string) => {
@@ -75,19 +87,108 @@ export default class BeerBrands extends Component<Props, State> {
     }
   };
 
+  countryFilter = (country: string) => {
+    const breweries: brewery[] = [...this.state.breweries];
+    const filteredBreweries: brewery[] = [...this.state.filteredBreweries];
+    if (filteredBreweries.length > 0 && country !== "All") {
+      const singleCountryBreweries = _.filter(
+        filteredBreweries,
+        (brewery) =>
+          brewery.locations &&
+          brewery.locations[0].country.displayName === country
+      );
+      this.setState({
+        singleCountryBreweries: singleCountryBreweries,
+        selectedCountry: [country],
+      });
+    } else if (breweries.length > 0 && country !== "All") {
+      const singleCountryBreweries = _.filter(
+        breweries,
+        (brewery) =>
+          brewery.locations &&
+          brewery.locations[0].country.displayName === country
+      );
+      this.setState({
+        singleCountryBreweries: singleCountryBreweries,
+        selectedCountry: [country],
+      });
+    } else {
+      this.setState({
+        singleCountryBreweries: [],
+        selectedCountry: [],
+      });
+    }
+  };
+
+  brandTypeFilter = (selectedFilter: string) => {
+    const breweries: brewery[] = [...this.state.breweries];
+    const filteredBreweries: brewery[] = [...this.state.breweries];
+
+    if (filteredBreweries.length > 0) {
+      switch (selectedFilter) {
+        case "organic":
+          // code block
+          break;
+        case "verified":
+          // code block
+          break;
+        case "mass":
+          // code block
+          break;
+        case "operational":
+          // code block
+          break;
+        default:
+        // code block
+      }
+    } else if (breweries.length > 0) {
+      switch (selectedFilter) {
+        case "organic":
+          // code block
+          break;
+        case "verified":
+          // code block
+          break;
+        case "mass":
+          // code block
+          break;
+        case "operational":
+          // code block
+          break;
+        default:
+        // code block
+      }
+    } else {
+      this.setState({ singleTypeBreweries: [] });
+    }
+  };
+
   render() {
     const breweries: brewery[] = [...this.state.breweries];
     const countries: Array<string> = [...this.state.countries];
     const filteredBreweries: brewery[] = [...this.state.filteredBreweries];
     const filteredCountries: Array<string> = [...this.state.filteredCountries];
+    const singleCountryBreweries: brewery[] = [
+      ...this.state.singleCountryBreweries,
+    ];
+    const selectedCountry: Array<string> = [...this.state.selectedCountry];
 
     return (
       <div>
         <h1>🍺Beer Brands 101🍺</h1>
         <Search searchQuery={this.searchQuery} />
-        <Filters />
+        <Filters
+          countries={countries}
+          filteredCountries={filteredCountries}
+          countryFilter={this.countryFilter}
+        />
         {this.state.searchQuery && filteredBreweries.length === 0 ? (
           <h1>No matching results</h1>
+        ) : singleCountryBreweries.length > 0 && selectedCountry.length > 0 ? (
+          <DefaultDisplay
+            breweries={singleCountryBreweries}
+            countries={selectedCountry}
+          />
         ) : this.state.searchQuery ? (
           <DefaultDisplay
             breweries={filteredBreweries}
