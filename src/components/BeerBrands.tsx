@@ -48,7 +48,7 @@ export default class BeerBrands extends Component<Props, State> {
 
     return (
       <div>
-        <h1>🍺Beer Brands🍺</h1>
+        <h1>🍺Beer Brands 101🍺</h1>
         {breweries && countries ? (
           <div>
             {_.map(countries, (country) => {
