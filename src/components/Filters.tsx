@@ -97,7 +97,7 @@ export default function Filters({
             </Dropdown.Item>
             <Dropdown.Item
               onClick={() => {
-                countryFilter("operational");
+                brandTypeFilter("operational");
               }}
             >
               Operational Brands
