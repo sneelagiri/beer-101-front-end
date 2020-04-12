@@ -5,7 +5,7 @@ import brewery from "../interfaces/brewery";
 import Search from "./Search";
 import Filters from "./Filters";
 import DefaultDisplay from "./DefaultDisplay";
-import { SSL_OP_NETSCAPE_CHALLENGE_BUG } from "constants";
+import "./homepage.css";
 
 interface Props {}
 
@@ -208,7 +208,7 @@ export default class BeerBrands extends Component<Props, State> {
     ];
     return (
       <div>
-        <h1>🍺Beer Brands 101🍺</h1>
+        <h1 className="align title">🍺Beer Brands 101🍺</h1>
         <Search searchQuery={this.searchQuery} />
         <Filters
           countries={countries}
@@ -218,7 +218,7 @@ export default class BeerBrands extends Component<Props, State> {
         />
         {(this.state.searchQuery && filteredBreweries.length === 0) ||
         singleTypeBreweries.length === 1 ? (
-          <h1>No matching results</h1>
+          <h1 className="align">No matching results</h1>
         ) : singleCountryBreweries.length > 0 && selectedCountry.length > 0 ? (
           <DefaultDisplay
             breweries={singleCountryBreweries}

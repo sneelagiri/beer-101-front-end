@@ -1,0 +1,69 @@
+.align.align.align {
+  text-align: center;
+}
+
+.rightAlign {
+  text-align: right;
+}
+
+.filterRow {
+  padding-top: 0.75rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  text-align: center;
+  padding-top: 2rem;
+  padding-bottom: 0.75rem;
+}
+
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+.title {
+  font-family: "Bangers", cursive;
+}
+
+.brandCards.brandCards.brandCards {
+  display: inline-table;
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 1rem;
+}
+
+.imageSize {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 286px;
+  max-height: 180px;
+  padding-top: 1rem;
+}
+
+.noLogo {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1rem;
+  max-height: 100px;
+}
+
+.cardDisplay {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 0.25rem;
+  padding-top: 4rem;
+  color: grey;
+}
