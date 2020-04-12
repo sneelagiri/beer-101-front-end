@@ -2,6 +2,8 @@
 
 [Link to the back-end here](https://github.com/sneelagiri/beer-brands-101-back-end)
 
+![Preview](https://i.imgur.com/pSynHZK.gif)
+
 ## Requirements
 Connect to the BreweryDB API. Your task is to list beer brands
 per country, provide a search field for them by name and filter/group them by country and by
