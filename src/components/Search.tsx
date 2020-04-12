@@ -1,4 +1,11 @@
 import React, { Component } from "react";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+import "./homepage.css";
 
 interface Props {
   searchQuery: (keyword: string) => void;
@@ -25,23 +32,29 @@ export default class Search extends Component<Props, State> {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="newFetch">Find brands: </label>
-          <input
-            type="text"
-            name="filterName"
-            className="searchBoxTitle"
-            placeholder="Search"
-            value={this.state.searchQuery}
-            onChange={this.handleChange}
-          />
-          <button
-            type="submit"
-            className="waves-effect waves-light btn apiSearch red lighten-2"
-          >
-            Search
-          </button>
-        </form>
+        <Container>
+          <Row className="justify-content-md-center">
+            <Form onSubmit={this.handleSubmit} className="searchForm" inline>
+              <Col>
+                <Form.Label className="align">Find brands: </Form.Label>
+              </Col>
+              <Col>
+                <Form.Control
+                  type="text"
+                  name="filterName"
+                  placeholder="Search"
+                  value={this.state.searchQuery}
+                  onChange={this.handleChange}
+                />
+              </Col>
+              <Col>
+                <Button type="submit" variant="warning">
+                  Search
+                </Button>
+              </Col>
+            </Form>
+          </Row>
+        </Container>
       </div>
     );
   }
