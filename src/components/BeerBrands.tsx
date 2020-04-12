@@ -36,7 +36,8 @@ export default class BeerBrands extends Component<Props, State> {
 
   async componentDidMount() {
     const fetchBreweries = await superagent.get(
-      `http://localhost:4000/breweries`
+      `https://beer-brands-back-end.herokuapp.com/breweries` ||
+        `http://localhost:4000/breweries`
     );
     const breweries: brewery[] = fetchBreweries.body.data;
     // Used Lodash map here because it is faster than the native map method
