@@ -42,6 +42,7 @@ p {
   margin-right: auto;
   max-width: 286px;
   max-height: 180px;
+  padding: 0.5rem;
   padding-top: 1rem;
 }
 
@@ -59,8 +60,7 @@ p {
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
+  position: relative;
   width: 100%;
   text-align: center;
   padding-bottom: 0.25rem;
