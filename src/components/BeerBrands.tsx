@@ -179,7 +179,7 @@ export default class BeerBrands extends Component<Props, State> {
         const singleTypeBreweries: brewery[] = _.filter(
           breweries,
           (brewery) =>
-            typeof brewery.isInBusiness !== undefined &&
+            typeof brewery.isInBusiness === "string" &&
             brewery.isInBusiness === "Y"
         );
         this.setState({
